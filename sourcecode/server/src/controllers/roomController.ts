@@ -6,6 +6,7 @@ import {
   SocketIO,
 } from "socket-controllers";
 import { Server, Socket } from "socket.io";
+import socket from "../socket";
 
 @SocketController()
 export class RoomController {
@@ -42,5 +43,6 @@ export class RoomController {
           .emit("start_game", { });
       }
     }
+    
   }
 }

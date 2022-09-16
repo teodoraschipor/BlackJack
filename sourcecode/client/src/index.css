@@ -18,9 +18,51 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 17px;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+
+button:enabled {
+  outline: none;
+  background-color: #1f70f2;
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 4px 18px;
+  transition: all 230ms ease-in-out;
+  margin-top: 1em;
+  cursor: pointer;
+}
+
+button:enabled:hover {
+  background-color: transparent;
+  border: 2px solid #1f70f2;
+  color: #1f70f2;
+}
+
+button:disabled, button[disabled] {
+  background-color: rgb(201, 201, 201);
+  color: grey;
+  border: 2px solig grey;
+  border-radius: 5px;
+  padding: 4px 18px;
+  margin-top: 1em;
+}
+
+input {
+  height: 30px;
+  width: 20em;
+  outline: none;
+  border-radius: 3px;
+  padding: 0 10px;
+  border: 1px solid grey;
+}
+
+input:active {
+  border: 1px solid #1f70f2;
 }

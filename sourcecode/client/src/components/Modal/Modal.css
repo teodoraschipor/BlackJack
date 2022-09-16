@@ -1,0 +1,18 @@
+.modal-container.opened {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+    width: 600px;
+    height: 300px;
+    position: fixed;
+    top: 35%;
+    left: 30%;
+}
+
+.modal-container.closed {
+    display: none;
+}

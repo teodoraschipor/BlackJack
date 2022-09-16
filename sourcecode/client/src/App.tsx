@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import socketService from "./services/SocketService/SocketService";
 import  JoinRoom  from "./components/JoinRoom/JoinRoom";
 import GameContext from "./gameContext";
 import Game from "./components/Game/Game";
-import { IGameContextProps } from "./typesAndInterfaces";
+import { Card, IGameContextProps } from "./interfaces";
 
 const App = () => {
   const [isInRoom, setInRoom] = useState(false);
+  const [roomName, setRoomName] = useState("");
+  const [playerId, setPlayerId] = useState("");
+  const [dealerId, setDealerId] = useState("");
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [isGameStarted, setGameStarted] = useState(false);
+  const [playerCards, setPlayerCards] = useState<Card[]>([]);
+  const [dealerCards, setDealerCards] = useState<Card[]>([]);
+  const [currentBet, setCurrentBet] = useState(0);
+  const [cardsDeck, setCardsDeck] = useState<Card[]>([]);
+  const [playerChips, setPlayerChips] = useState(1000);
+
 
   const connectSocket = async () => {
     const socket = await socketService
@@ -24,8 +33,24 @@ const App = () => {
   }, []);
 
   const gameContextValue: IGameContextProps = {
+    roomName,
+    setRoomName,
     isInRoom,
     setInRoom,
+    playerId,
+    setPlayerId,
+    dealerId,
+    setDealerId,
+    playerCards,
+    setPlayerCards,
+    dealerCards,
+    setDealerCards,
+    currentBet,
+    setCurrentBet,
+    cardsDeck,
+    setCardsDeck,
+    playerChips,
+    setPlayerChips,
     isPlayerTurn,
     setPlayerTurn,
     isGameStarted,
