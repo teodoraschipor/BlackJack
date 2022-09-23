@@ -8,7 +8,6 @@ const JoinRoom = () => {
   const [isJoining, setJoining] = useState(false);
   const {
     setInRoom, 
-    isInRoom, 
     roomName, 
     setRoomName,
   } = useContext(gameContext);
@@ -17,10 +16,6 @@ const JoinRoom = () => {
     const value = e.target.value;
     setRoomName(value);
   };
-
-  const handleIds = () => {
-    return true;
-  }
 
   const joinRoom = async (e: React.FormEvent) => { // sends a request to the server and says: this is the room id that I wanna join
     e.preventDefault();

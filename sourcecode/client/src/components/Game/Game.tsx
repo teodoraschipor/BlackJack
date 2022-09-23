@@ -13,6 +13,7 @@ const Game = () => { // the actual game
 
   const {
     setPlayerTurn,
+    isPlayerTurn,
     currentBet,
     playerCards,
     setDealerCards,
@@ -44,7 +45,7 @@ const Game = () => { // the actual game
   }
 
   const handleGameStart = () => {
-    if (socketService.socket)
+    if(socketService.socket) {
       gameService.onStartGame(socketService.socket, (options: IStartGame) => {
         setGameStarted(true);
         setPlayerType(options.playerType);
@@ -57,34 +58,44 @@ const Game = () => { // the actual game
           setDealerWaitingScreen(true);
         }
       });
+    }
   };
 
-  const handleGameUpdate = () => {
-    if (socketService.socket)
-      gameService.onGameUpdate(socketService.socket, (options) => {
+  const handleGameInitialization = () => {
+    if(socketService.socket) {
+      gameService.onGameInitialization(socketService.socket, (options) => {
+        console.log('in handle game init')
         setDealerCards(options.dealerCards!);
         setPlayerCards(options.playerCards!);
         setCardsDeck(options.cardsDeck!);
         setPlayerChips(options.playerChips!);
         setCurrentBet(options.currentBet!);
-        //checkGameState(options.cardsDeck!);
-        setPlayerTurn(true);
-      });
+      })
+    }
   }
 
-  useEffect(() => {
-    console.log('playertype useeffect: ', playerType)
-  }, [playerType])
+  const handleGameUpdate = () => {
+    if(socketService.socket) {
+      gameService.onGameUpdate(socketService.socket, (options) => {
+        
+        //checkGameState(options.cardsDeck!);
+        //setPlayerTurn(true);
+      });
+    }
+  }
 
   const handleGameWin = () => {
-    if (socketService.socket)
+    if(socketService.socket) {
       gameService.onGameWin(socketService.socket, (message) => {
         setPlayerTurn(false);
         alert(message);
       });
+    }
   }; 
 
   const displayDealerScreen = () => {
+    
+    console.log(dealerCards)
     return(
       <div className="game-table__details">
                 
@@ -92,33 +103,44 @@ const Game = () => { // the actual game
                
                 <p>Bet: {currentBet} $</p>
                 
-                <p>Your cards: {dealerCards.map(item => <img className="image-card" src={`${process.env.PUBLIC_URL}/${item.imageSource}`} key={item.imageSource}/>)}</p>
+                <p>Your cards: {dealerCards.map(item => {
+                  if(item.visible === false) 
+                    return (<img className="image-card" src={`${process.env.PUBLIC_URL}/card_back.png`} key={item.imageSource}/>)
+                  else 
+                    return (<img className="image-card" src={`${process.env.PUBLIC_URL}/${item.imageSource}`} key={item.imageSource}/>)})}</p>
 
-                <button className="hit-button" onClick={handleGameUpdate}>HIT</button>
-                <button className="stand-button" onClick={handleGameUpdate}>STAND</button>
+                <button className="hit-button" onClick={handleGameUpdate} disabled={!isPlayerTurn}>HIT</button>
+                <button className="stand-button" onClick={handleGameUpdate} disabled={!isPlayerTurn}>STAND</button>
         </div>
     )
   }
 
   const displayPlayerScreen = () => {
+    console.log(dealerCards)
     return(
       <div className="game-table__details">
                 
-                <p>Dealer's cards: {dealerCards.map(item => <img className="image-card" src={`${process.env.PUBLIC_URL}/${item.imageSource}`} key={item.imageSource}/>)}</p>
+                <p>Dealer's cards: {dealerCards.map(item => {
+                  if(item.visible === false) 
+                    return (<img className="image-card" src={`${process.env.PUBLIC_URL}/card_back.png`} key={item.imageSource}/>)
+                  else 
+                    return (<img className="image-card" src={`${process.env.PUBLIC_URL}/${item.imageSource}`} key={item.imageSource}/>)})}</p>
+
                
                 <p>Bet: {currentBet} $</p>
                 
                 <p>Your cards: {playerCards.map(item => <img className="image-card" src={`${process.env.PUBLIC_URL}/${item.imageSource}`} key={item.imageSource}/>)}</p>
                 
                 <p>Money left over: {playerChips} $</p>
-                <button className="hit-button" onClick={handleGameUpdate}>HIT</button>
-                <button className="stand-button" onClick={handleGameUpdate}>STAND</button>
+                <button className="hit-button" onClick={handleGameUpdate} disabled={!isPlayerTurn}>HIT</button>
+                <button className="stand-button" onClick={handleGameUpdate} disabled={!isPlayerTurn}>STAND</button>
         </div>
     )
   }
 
   useEffect(() => {
     handleGameStart();
+    handleGameInitialization();
     handleGameUpdate();
     handleGameWin();
   }, []);
@@ -126,7 +148,6 @@ const Game = () => { // the actual game
   useEffect(() => {
     if(currentBet) {
       setDealerWaitingScreen(false);
-      setModalOpened(false);
     }
   }, [currentBet])
 
@@ -137,7 +158,7 @@ const Game = () => { // the actual game
       ) :
       <div className="game-table">
         {modalOpened ? (
-        <Modal isOpened={modalOpened} setIsOpenedCallback={setModalOpened} />
+        <Modal isOpened={modalOpened} setIsOpenedCallback={setModalOpened} modalOperationType="initialization" />
         ) : dealerWaitingScreen ? (<h2>Waiting for the player to place the bet...</h2>) : 
           playerType === "player" ? displayPlayerScreen() : displayDealerScreen()
         }

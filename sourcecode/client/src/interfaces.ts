@@ -3,6 +3,7 @@ import { PlayerType } from "./types";
 export interface Card {
     imageSource: string,
     value: number | number[],
+    visible?: boolean,
 }
 
 export interface IStartGame {

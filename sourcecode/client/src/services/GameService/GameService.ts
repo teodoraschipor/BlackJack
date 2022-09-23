@@ -12,6 +12,14 @@ class GameService { // takes care of anything related to a game: joining the roo
     });
   }
 
+  public async initializeGame(socket: Socket, options: IGameContextPropsOptional) {
+    socket.emit("initialize_game", options);
+  }
+
+  public async onGameInitialization(socket: Socket, listener: (options: IGameContextPropsOptional) => void) {
+    socket.on("on_game_initialization", (options) => listener(options));
+  }
+
   public async updateGame(socket: Socket, options: IGameContextPropsOptional) {
     socket.emit("update_game", options);
   }

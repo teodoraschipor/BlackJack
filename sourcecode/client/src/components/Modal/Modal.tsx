@@ -4,11 +4,13 @@ import gameContext from "../../gameContext";
 import { Card } from "../../interfaces";
 import gameService from "../../services/GameService/GameService";
 import socketService from "../../services/SocketService/SocketService";
+import { ModalOperationType } from "../../types";
 import "./Modal.css";
 
 interface IProps {    
     isOpened: boolean;
     setIsOpenedCallback: Function;
+    modalOperationType: ModalOperationType;
 }
 
 const Modal: FunctionComponent<IProps> = (props) => {
@@ -17,13 +19,12 @@ const Modal: FunctionComponent<IProps> = (props) => {
 
     const {
         playerChips,
-        currentBet,
         setCardsDeck,
         setPlayerCards,
         setPlayerChips,
         setCurrentBet,
         setDealerCards,
-        setPlayerType
+        setPlayerTurn
     } = useContext(gameContext);
 
     const shuffleCardsDeck = (array: Card[]) => {
@@ -35,23 +36,24 @@ const Modal: FunctionComponent<IProps> = (props) => {
             array[randomIndex], array[currentIndex]];
         }
         return array;
-      }
+    }
 
     const handleOnClick = (betValue: number) => {
-        const cardsDeckShuffled = shuffleCardsDeck(completeCardsDeck);
-        const playerChipsResult = playerChips! - betValue;
-        gameService.updateGame(socketService.socket!, { currentBet: betValue, cardsDeck: cardsDeckShuffled, playerChips: playerChipsResult, playerCards: [cardsDeckShuffled[0], cardsDeckShuffled[2]], dealerCards: [cardsDeckShuffled[1], cardsDeckShuffled[3]]})
-        setCardsDeck(cardsDeckShuffled!);
-        setPlayerCards([cardsDeckShuffled[0], cardsDeckShuffled[2]]);
-        setDealerCards([cardsDeckShuffled[1], cardsDeckShuffled[3]])
-        setPlayerChips(playerChipsResult);
+        if(props.modalOperationType === "initialization") {
+            const cardsDeckShuffled = shuffleCardsDeck(completeCardsDeck);
+            cardsDeckShuffled[1].visible = false;
+            const playerChipsResult = playerChips! - betValue;
+            gameService.initializeGame(socketService.socket!, { currentBet: betValue, cardsDeck: cardsDeckShuffled, playerChips: playerChipsResult, playerCards: [cardsDeckShuffled[0], cardsDeckShuffled[2]], dealerCards: [cardsDeckShuffled[1], cardsDeckShuffled[3]] });
+            setCardsDeck(cardsDeckShuffled!);
+            setPlayerCards([cardsDeckShuffled[0], cardsDeckShuffled[2]]);
+            setDealerCards([cardsDeckShuffled[1], cardsDeckShuffled[3]])
+            setPlayerChips(playerChipsResult);
+        } else {
+            gameService.updateGame(socketService.socket!, {});
+        }
         setCurrentBet(betValue);
         props.setIsOpenedCallback(false);
     }
-
-    useEffect(() => {
-        console.log('current bet from player: ', currentBet)
-    }, [currentBet])
 
     return(
         <div className={`modal-container ${props.isOpened ? "opened" : "closed"}`}>
