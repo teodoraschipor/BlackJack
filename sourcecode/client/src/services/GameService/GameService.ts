@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { Card } from "../../interfaces";
+import { IGameContextPropsOptional, IStartGame } from "../../interfaces";
 
 class GameService { // takes care of anything related to a game: joining the room, sending updates, etc.
 
@@ -12,29 +12,23 @@ class GameService { // takes care of anything related to a game: joining the roo
     });
   }
 
-  public async updateGame(socket: Socket) {
-    // TO DO
-    socket.emit("update_game");
+  public async updateGame(socket: Socket, options: IGameContextPropsOptional) {
+    socket.emit("update_game", options);
   }
 
-  public async onGameUpdate( // plays the role of a listener, that listenes to the updates, all the players will listen to any updates of the game
+  public async onGameUpdate( // plays the role of a listener, that listenes to the updates, the other players will listen to the updates of the game
                               // whenever we're going to receive from gameController the message "on_game_update" we're going to listen to it 
     socket: Socket,
-    listener: (options: {
-      newCardsDeck: Card[],
-      newPlayerCards: Card[],
-      newPlayerChips: number,
-      newCurrentBet: number,
-    }) => void
+    listener: (options: IGameContextPropsOptional) => void
   ) {
-    socket.on("on_game_update", listener);
+    socket.on("on_game_update", (options) => listener(options));
   }
 
   public async onStartGame(
     socket: Socket,
-    listener: (start: boolean) => void
+    listener: (options: IStartGame) => void
   ) {
-    socket.on("start_game", listener);
+    socket.on("start_game", listener); // listen for "start_game" events
   }
 
   public async gameWin(socket: Socket, message: string) {

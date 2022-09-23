@@ -25,7 +25,7 @@ export class GameController {
     @MessageBody() message: any
   ) {
     const gameRoom = this.getSocketGameRoom(socket);
-    socket.to(gameRoom).emit("on_game_update", message);
+    socket.to(gameRoom).emit("on_game_update", message); // targets a room when broadcasting
   }
 
   @OnMessage("game_win")

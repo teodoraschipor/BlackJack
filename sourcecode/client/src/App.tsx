@@ -5,12 +5,12 @@ import  JoinRoom  from "./components/JoinRoom/JoinRoom";
 import GameContext from "./gameContext";
 import Game from "./components/Game/Game";
 import { Card, IGameContextProps } from "./interfaces";
+import { PlayerType } from "./types";
 
 const App = () => {
   const [isInRoom, setInRoom] = useState(false);
   const [roomName, setRoomName] = useState("");
-  const [playerId, setPlayerId] = useState("");
-  const [dealerId, setDealerId] = useState("");
+  const [playerType, setPlayerType] = useState<PlayerType | "">("");
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [isGameStarted, setGameStarted] = useState(false);
   const [playerCards, setPlayerCards] = useState<Card[]>([]);
@@ -37,10 +37,8 @@ const App = () => {
     setRoomName,
     isInRoom,
     setInRoom,
-    playerId,
-    setPlayerId,
-    dealerId,
-    setDealerId,
+    playerType,
+    setPlayerType,
     playerCards,
     setPlayerCards,
     dealerCards,

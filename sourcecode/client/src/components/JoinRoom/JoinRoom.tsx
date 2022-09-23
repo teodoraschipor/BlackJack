@@ -4,20 +4,13 @@ import gameContext from "../../gameContext";
 import gameService from "../../services/GameService/GameService";
 import socketService from "../../services/SocketService/SocketService";
 
-// TO DO
-// finish to implement the setDealerId and setPlayerId so then we'll know the current socket's ROLE in order to implement the correct actions for the current player
-
 const JoinRoom = () => {
   const [isJoining, setJoining] = useState(false);
   const {
     setInRoom, 
     isInRoom, 
     roomName, 
-    setRoomName, 
-    dealerId, 
-    setDealerId, 
-    playerId, 
-    setPlayerId
+    setRoomName,
   } = useContext(gameContext);
 
   const handleRoomNameChange = (e: React.ChangeEvent<any>) => {
@@ -36,7 +29,6 @@ const JoinRoom = () => {
     if (!roomName || roomName.trim() === "" || !socket) return;
 
     setJoining(true); // if the server is overloaded etc.
-    console.log('socket.id: ', socketService.socket!.id);
 
     const joined = await gameService
       .joinGameRoom(socket, roomName)
