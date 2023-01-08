@@ -5,20 +5,22 @@ import  JoinRoom  from "./components/JoinRoom/JoinRoom";
 import GameContext from "./gameContext";
 import Game from "./components/Game/Game";
 import { Card, IGameContextProps } from "./interfaces";
-import { PlayerType } from "./types";
+import { PlayerName } from "./types";
 
 const App = () => {
   const [isInRoom, setInRoom] = useState(false);
   const [roomName, setRoomName] = useState("");
-  const [playerType, setPlayerType] = useState<PlayerType | "">("");
+  const [playerName, setPlayerName] = useState<PlayerName | "">("");
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [isGameStarted, setGameStarted] = useState(false);
-  const [playerCards, setPlayerCards] = useState<Card[]>([]);
+  const [player1Cards, setPlayer1Cards] = useState<Card[]>([]);
+  const [player2Cards, setPlayer2Cards] = useState<Card[]>([]);
   const [dealerCards, setDealerCards] = useState<Card[]>([]);
-  const [currentBet, setCurrentBet] = useState(0);
   const [cardsDeck, setCardsDeck] = useState<Card[]>([]);
-  const [playerChips, setPlayerChips] = useState(1000);
-
+  const [player1Chips, setPlayer1Chips] = useState(1000);
+  const [player2Chips, setPlayer2Chips] = useState(1000);
+  const [betPlayer1, setBetPlayer1] = useState(0);
+  const [betPlayer2, setBetPlayer2] = useState(0);
 
   const connectSocket = async () => {
     const socket = await socketService
@@ -37,18 +39,24 @@ const App = () => {
     setRoomName,
     isInRoom,
     setInRoom,
-    playerType,
-    setPlayerType,
-    playerCards,
-    setPlayerCards,
+    playerName,
+    setPlayerName,
+    player1Cards,
+    setPlayer1Cards,
+    player2Cards,
+    setPlayer2Cards,
     dealerCards,
     setDealerCards,
-    currentBet,
-    setCurrentBet,
+    betPlayer1,
+    setBetPlayer1,
+    betPlayer2,
+    setBetPlayer2,
     cardsDeck,
     setCardsDeck,
-    playerChips,
-    setPlayerChips,
+    player1Chips,
+    setPlayer1Chips,    
+    player2Chips,
+    setPlayer2Chips,
     isPlayerTurn,
     setPlayerTurn,
     isGameStarted,

@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { IGameContextPropsOptional, IStartGame } from "../../interfaces";
+import { Card, IGameContextPropsOptional, IStartGame } from "../../interfaces";
 
 class GameService { // takes care of anything related to a game: joining the room, sending updates, etc.
 
@@ -18,6 +18,14 @@ class GameService { // takes care of anything related to a game: joining the roo
 
   public async onGameInitialization(socket: Socket, listener: (options: IGameContextPropsOptional) => void) {
     socket.on("on_game_initialization", (options) => listener(options));
+  }
+
+  public async checkCards(socket: Socket, options: { dealerCards: Card[], playerCards: Card[] }) {
+    socket.emit("check_cards", options)
+  }
+
+  public async onCheckCards(socket: Socket, listener: (options: { dealerCards: Card[], playerCards: Card[] }) => void) {
+    socket.on("on_check_cards", (options) => listener(options));
   }
 
   public async updateGame(socket: Socket, options: IGameContextPropsOptional) {

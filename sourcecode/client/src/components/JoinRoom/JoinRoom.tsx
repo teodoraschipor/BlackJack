@@ -17,6 +17,10 @@ const JoinRoom = () => {
     setRoomName(value);
   };
 
+  /**
+     * function that handles the room join
+     * @param {React.FormEvent} e - the form event 
+     */
   const joinRoom = async (e: React.FormEvent) => { // sends a request to the server and says: this is the room id that I wanna join
     e.preventDefault();
 

@@ -38,10 +38,10 @@ export class RoomController {
       socket.emit("room_joined");
 
       if (io.sockets.adapter.rooms.get(message.roomId).size === 2) {
-        socket.emit("start_game", { start: true, playerType: "player" }); // the last socket that has joined the room
+        socket.emit("start_game", { start: true, playerName: "player1" }); // the last socket that has joined the room
         socket // send this event to the first socket. socket.to = the socket sends a message to the room and this particular socket itself is not gonna receive that message
           .to(message.roomId)
-          .emit("start_game", { start: false, playerType: "dealer" });
+          .emit("start_game", { start: false, playerName: "player2" });
       }
     }    
   }

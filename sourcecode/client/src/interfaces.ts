@@ -1,4 +1,4 @@
-import { PlayerType } from "./types";
+import { PlayerName } from "./types";
 
 export interface Card {
     imageSource: string,
@@ -8,7 +8,12 @@ export interface Card {
 
 export interface IStartGame {
     start: boolean,
-    playerType: PlayerType,
+    playerName: PlayerName,
+}
+
+export interface IAction {
+    type: string,
+    payload?: any,
 }
 
 export interface IGameContextProps { // the state
@@ -16,18 +21,24 @@ export interface IGameContextProps { // the state
     setRoomName: (roomName: string) => void,
     isInRoom: boolean,
     setInRoom: (inRoom: boolean) => void,
-    playerType: PlayerType | "",
-    setPlayerType: (playerType: PlayerType) => void,
-    playerCards: Card[],
-    setPlayerCards: (cards: Card[]) => void,
+    playerName: PlayerName | "",
+    setPlayerName: (playerName: PlayerName) => void,
+    player1Cards: Card[],
+    setPlayer1Cards: (cards: Card[]) => void,
+    player2Cards: Card[],
+    setPlayer2Cards: (cards: Card[]) => void,
     dealerCards: Card[],
     setDealerCards: (cards: Card[]) => void,
-    currentBet: number,
-    setCurrentBet: (bet: number) => void,
+    betPlayer1: number,
+    setBetPlayer1: (betValue: number) => void,
+    betPlayer2: number,
+    setBetPlayer2: (betValue: number) => void,
     cardsDeck: Card[],
     setCardsDeck: (cards: Card[]) => void,
-    playerChips: number | null;
-    setPlayerChips: (chips: number) => void,
+    player1Chips: number | null;
+    setPlayer1Chips: (chips: number) => void,
+    player2Chips: number | null;
+    setPlayer2Chips: (chips: number) => void,
     isPlayerTurn: boolean,
     setPlayerTurn: (turn: boolean) => void,
     isGameStarted: boolean,
@@ -39,18 +50,24 @@ export interface IGameContextPropsOptional {
     setRoomName?: (roomName: string) => void,
     isInRoom?: boolean,
     setInRoom?: (inRoom: boolean) => void,
-    playerType?: PlayerType | "",
-    setPlayerType?: (playerType: PlayerType) => void,
-    playerCards?: Card[],
-    setPlayerCards?: (cards: Card[]) => void,
+    playerName?: PlayerName | "",
+    setPlayerName?: (playerName: PlayerName) => void,
+    player1Cards?: Card[],
+    setPlayer1Cards?: (cards: Card[]) => void,
+    player2Cards?: Card[],
+    setPlayer2Cards?: (cards: Card[]) => void,
     dealerCards?: Card[],
     setDealerCards?: (cards: Card[]) => void,
-    currentBet?: number,
-    setCurrentBet?: (bet: number) => void,
+    betPlayer1?: number,
+    setBetPlayer1?: (betValue: number) => void,
+    betPlayer2?: number,
+    setBetPlayer2?: (betValue: number) => void,
     cardsDeck?: Card[],
     setCardsDeck?: (cards: Card[]) => void,
-    playerChips?: number | null;
-    setPlayerChips?: (chips: number) => void,
+    player1Chips?: number | null;
+    setPlayer1Chips?: (chips: number) => void,
+    player2Chips?: number | null;
+    setPlayer2Chips?: (chips: number) => void,
     isPlayerTurn?: boolean,
     setPlayerTurn?: (turn: boolean) => void,
     isGameStarted?: boolean,

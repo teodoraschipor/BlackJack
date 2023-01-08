@@ -38,6 +38,16 @@ export class GameController {
     socket.to(gameRoom).emit("on_game_initialization", message); // targets a room when broadcasting
   }
 
+  @OnMessage("check_cards")
+  public async checkCards(
+    @SocketIO() io: Server,
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() message: any
+  ) {
+    const gameRoom = this.getSocketGameRoom(socket);
+    socket.to(gameRoom).emit("on_check_cards", message); // targets a room when broadcasting
+  }
+
   @OnMessage("game_win")
   public async gameWin(
     @SocketIO() io: Server,
